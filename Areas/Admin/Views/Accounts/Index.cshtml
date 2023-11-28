@@ -1,0 +1,133 @@
+﻿@model IEnumerable<MyPhamCheilinus.Models.Account>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    table thead th {
+        background-color: #e6e6e6; /* Màu nền của đầu mục */
+        color: #000; /* Màu chữ của đầu mục */
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách tài khoản quản trị</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="row card-body">
+                        <div class="col-lg-12">
+                            <div class="d-md-flex">
+                                <div class="col-lg-2">
+                                    <select class="custom-select" id="idrole" name="idrole" style="min-width: 200px" asp-items="ViewBag.QuyenTruyCap">
+                                        <option value="0" disabled selected>Chọn quyền truy cập</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                        <select class="custom-select" id="idstatus" name="idstatus" style="min-width: 200px" asp-items="ViewBag.lsTrangThai">
+                                            <option value="" disabled selected>Chọn trạng thái</option>
+                                        </select>
+                                </div>
+                                <div class="col-lg-2">
+           
+                                        <button class="btn btn-outline-secondary" type="button" id="searchButton">Tìm kiếm</button>
+
+                                </div>
+                                    <div class="col-lg-6 text-right">
+                                        <a class="btn btn-primary" asp-controller="Accounts" asp-action="Create" asp-route-page="@ViewBag.CurrentPage" asp-route-Search="@ViewBag.CurrentSearch" asp-route-Id="@ViewBag.CurrentId" asp-route-MoTa="@ViewBag.CurrentMoTa"><i class="anticon anticon-plus-circle m-r-5"></i> <span>Thêm tài khoản</span></a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>ID</th>
+                                    <th>Họ và tên</th>
+                                    <th>Địa chỉ Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Lần đăng nhập cuối</th>
+                                    <th>Quyền truy cập</th>
+                                    <th>Trạng thái</th>
+                                    <th>Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@i</td>
+                                           
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @*<img class="img-fluid rounded" src =*@
+                                                    <h6 class="m-b-0 m-l-10">@item.FullName</h6>
+                                                </div>
+                                            </td>
+                                            <td>@item.AccountEmail</td>
+                                            <td class="text-center">@item.Phone</td>
+                                            <td class="text-center">@item.LastLogin</td>
+                                            <td class="text-center">@item.RoleNavigation.Description</td>
+                                            <td>
+                                                @if (item.Active)
+                                                {
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="badge badge-success badge-dot m-r-10">
+                                                            <div><h6>Active</h6></div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="badge badge-success badge-dot m-r-10">
+                                                            <div><h6>Block</h6></div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="text-right">
+                                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details" asp-route-id="@item.AccountId">Chi tiết</a>
+                                                <a class="btn btn-success btn-tone m-r-5" asp-action="Edit" asp-route-id="@item.AccountId">Sửa</a>
+                                                <a class="btn btn-danger btn-tone m-r-5" asp-action="Delete" asp-route-id="@item.AccountId">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                             </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
