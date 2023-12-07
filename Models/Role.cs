@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyPhamCheilinus.Models;
+namespace MyPhamCheilinus.Models1;
 
 public partial class Role
 {

@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyPhamCheilinus.Models;
+using MyPhamCheilinus.Models1;
 
 #nullable disable
 
 namespace MyPhamCheilinus.Migrations
 {
-    [DbContext(typeof(_2023MyPhamContext))]
-    partial class _2023MyPhamContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(CanhGacContext))]
+    partial class CanhGacContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyPhamCheilinus.Models;
+using MyPhamCheilinus.Models1;
 
 #nullable disable
 
 namespace MyPhamCheilinus.Migrations
 {
-    [DbContext(typeof(_2023MyPhamContext))]
+    [DbContext(typeof(CanhGacContext))]
     [Migration("20231017042020_initTable")]
     partial class initTable
     {
