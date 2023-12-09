@@ -1,12 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Notyf.Models;
 using AspNetCoreHero.ToastNotification;
 using Microsoft.EntityFrameworkCore;
-using MyPhamCheilinus.Models1;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using MyPhamCheilinus.Models1;
+using CanhGac.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +29,7 @@ builder.Services.AddSession(options =>
 
 
 
+
 // Thêm dịch vụ Identity
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(p =>
@@ -41,11 +41,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.IsEssential = true;
-});
+
 
 var app = builder.Build();
 
@@ -57,11 +53,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseAuthentication();
-app.UseAuthorization();
 app.UseSession();
 
 app.UseRouting();
-app.UseSession();
+
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

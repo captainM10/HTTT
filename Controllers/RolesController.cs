@@ -5,91 +5,94 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MyPhamCheilinus.Models1;
+using CanhGac.Models;
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
-namespace MyPhamCheilinus.Controllers
+namespace CanhGac.Controllers
 {
-    public class DonVisController : Controller
+    //[Authorize(Roles = "Tiểu đoàn")]
+    public class RolesController : Controller
     {
         private readonly CanhGacContext _context;
 
-        public DonVisController(CanhGacContext context)
+        public RolesController(CanhGacContext context)
         {
             _context = context;
         }
 
-        // GET: DonVis
+        // GET: Roles
         public async Task<IActionResult> Index()
         {
-              return _context.DonVis != null ? 
-                          View(await _context.DonVis.ToListAsync()) :
-                          Problem("Entity set 'CanhGacContext.DonVis'  is null.");
+              return _context.Roles != null ? 
+                          View(await _context.Roles.ToListAsync()) :
+                          Problem("Entity set 'CanhGacContext.Roles'  is null.");
         }
 
-        // GET: DonVis/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: Roles/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.DonVis == null)
+            if (id == null || _context.Roles == null)
             {
                 return NotFound();
             }
 
-            var donVi = await _context.DonVis
-                .FirstOrDefaultAsync(m => m.MaDonVi == id);
-            if (donVi == null)
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(m => m.RoleId == id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(donVi);
+            return View(role);
         }
 
-        // GET: DonVis/Create
+        // GET: Roles/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: DonVis/Create
+        // POST: Roles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaDonVi,TenDonVi,QuanSo,MauSac")] DonVi donVi)
+        public async Task<IActionResult> Create([Bind("RoleId,RoleName,Description")] Role role)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(donVi);
+                _context.Add(role);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(donVi);
+            return View(role);
         }
 
-        // GET: DonVis/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        // GET: Roles/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.DonVis == null)
+            if (id == null || _context.Roles == null)
             {
                 return NotFound();
             }
 
-            var donVi = await _context.DonVis.FindAsync(id);
-            if (donVi == null)
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
             {
                 return NotFound();
             }
-            return View(donVi);
+            return View(role);
         }
 
-        // POST: DonVis/Edit/5
+        // POST: Roles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaDonVi,TenDonVi,QuanSo,MauSac")] DonVi donVi)
+        public async Task<IActionResult> Edit(int id, [Bind("RoleId,RoleName,Description")] Role role)
         {
-            if (id != donVi.MaDonVi)
+            if (id != role.RoleId)
             {
                 return NotFound();
             }
@@ -98,12 +101,12 @@ namespace MyPhamCheilinus.Controllers
             {
                 try
                 {
-                    _context.Update(donVi);
+                    _context.Update(role);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DonViExists(donVi.MaDonVi))
+                    if (!RoleExists(role.RoleId))
                     {
                         return NotFound();
                     }
@@ -114,49 +117,49 @@ namespace MyPhamCheilinus.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(donVi);
+            return View(role);
         }
 
-        // GET: DonVis/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        // GET: Roles/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.DonVis == null)
+            if (id == null || _context.Roles == null)
             {
                 return NotFound();
             }
 
-            var donVi = await _context.DonVis
-                .FirstOrDefaultAsync(m => m.MaDonVi == id);
-            if (donVi == null)
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(m => m.RoleId == id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(donVi);
+            return View(role);
         }
 
-        // POST: DonVis/Delete/5
+        // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.DonVis == null)
+            if (_context.Roles == null)
             {
-                return Problem("Entity set 'CanhGacContext.DonVis'  is null.");
+                return Problem("Entity set 'CanhGacContext.Roles'  is null.");
             }
-            var donVi = await _context.DonVis.FindAsync(id);
-            if (donVi != null)
+            var role = await _context.Roles.FindAsync(id);
+            if (role != null)
             {
-                _context.DonVis.Remove(donVi);
+                _context.Roles.Remove(role);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DonViExists(string id)
+        private bool RoleExists(int id)
         {
-          return (_context.DonVis?.Any(e => e.MaDonVi == id)).GetValueOrDefault();
+          return (_context.Roles?.Any(e => e.RoleId == id)).GetValueOrDefault();
         }
     }
 }

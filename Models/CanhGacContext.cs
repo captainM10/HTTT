@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyPhamCheilinus.Models1;
+namespace CanhGac.Models;
 
 public partial class CanhGacContext : DbContext
 {
@@ -48,12 +48,18 @@ public partial class CanhGacContext : DbContext
             entity.ToTable("Account");
 
             entity.Property(e => e.AccountId).HasColumnName("AccountID");
+            entity.Property(e => e.CreateDate).HasColumnType("date");
             entity.Property(e => e.LastLogin).HasColumnType("date");
-            entity.Property(e => e.MaDonVi)
-                .HasMaxLength(20)
-                .IsUnicode(false);
             entity.Property(e => e.Pasword).HasMaxLength(50);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(12)
+                .IsUnicode(false);
             entity.Property(e => e.RoleId).HasColumnName("RoleID");
+            entity.Property(e => e.Salt)
+                .HasMaxLength(6)
+                .IsFixedLength();
+            entity.Property(e => e.TenDonVi).HasMaxLength(50);
+            entity.Property(e => e.UserName).HasMaxLength(50);
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)

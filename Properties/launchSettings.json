@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "MyPhamCheilinus": {
+    "CanhGac": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

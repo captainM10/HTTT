@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyPhamCheilinus.Models1;
+namespace CanhGac.Models;
 
 public partial class DonVi
 {

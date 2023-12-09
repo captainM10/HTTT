@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
+using CanhGac.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MyPhamCheilinus.Models1;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyPhamCheilinus.Controllers
 {
+
     public class ThongTinGacsController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly CanhGacContext _context;
-
+     
         public ThongTinGacsController(CanhGacContext context)
         {
             _context = context;
         }
 
         // GET: ThongTinGacs
+       
         public async Task<IActionResult> Index()
         {
             var canhGacContext = _context.DonVis;
@@ -33,6 +37,8 @@ namespace MyPhamCheilinus.Controllers
             try
             {
                 var events = _context.ThongTinGacs
+                    .AsNoTracking()
+                    .Include(x=>x.MaDonViNavigation)
                     .Where(p => _context.ThongTinGacs.Select(d => d.MaDonVi).Contains(p.MaDonVi))
                     .ToList();
 
@@ -42,7 +48,7 @@ namespace MyPhamCheilinus.Controllers
                     title = e.MaDonVi,
                     start = e.Ngay.ToString("yyyy-MM-dd"),
                     allDay = true,
-                    color = (e.MaDonVi == "C158") ? "#FF8A65" : (e.MaDonVi == "C157") ? "#00695C" : (e.MaDonVi == "C156") ? "#82B1FF" : (e.MaDonVi == "C155") ? "#7B1FA2" : null,
+                    color = e.MaDonViNavigation.MauSac,
                     hoi = e.Hoi,
                     dap = e.Dap
                 });
@@ -56,12 +62,8 @@ namespace MyPhamCheilinus.Controllers
         }
 
 
-        private IActionResult JsonResult(IEnumerable<object> eventList, JsonRequestBehavior allowGet)
-        {
-            throw new NotImplementedException();
-        }
-
         [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Authorize(Roles = "Tiểu đoàn")]
         public IActionResult EditEvent(string MaDonVi, DateTime Ngay, string Hoi, string Dap)
         {
             try
@@ -98,6 +100,7 @@ namespace MyPhamCheilinus.Controllers
             throw new NotImplementedException();
         }
         [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Authorize(Roles = "Tiểu đoàn")]
         public IActionResult DeleteEvent(DateTime id)
         {
             try
@@ -127,6 +130,7 @@ namespace MyPhamCheilinus.Controllers
 
 
         [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Authorize(Roles ="Tiểu đoàn")]
         public IActionResult AddEvent(ThongTinGac model)
         {
             try

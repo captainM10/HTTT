@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
-    <None Include="Areas\Admin\Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="wwwroot\Adminassets\.github\codeql\codeql-config.yml" />
     <None Include="wwwroot\Adminassets\.github\CONTRIBUTING.md" />
     <None Include="wwwroot\Adminassets\.github\dependabot.yml" />
@@ -2899,7 +2897,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Content\" />
   </ItemGroup>

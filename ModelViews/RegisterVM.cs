@@ -10,15 +10,18 @@ namespace MyPhamCheilinus.ModelViews
     public class RegisterVM
     {
         [Key]
-        public int AccountId { get; set; }
-        [Display(Name = "Họ Và Tên")]
-        [Required(ErrorMessage = "Vui lòng nhập Họ Tên")]
-        public string TenKhachHang { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập Email")]
+        public int MaDonVi { get; set; }
+        //Tên đơn vi
+        [Display(Name = "Tên đơn vị")]
+        [Required(ErrorMessage = "Vui lòng nhập tên đơn vị")]
+        public string TenDonVi { get; set; }
+        [Display(Name = "Tên đăng nhập")]
+        [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập")]
+        //Tên đăng nhập
         [MaxLength(150)]
-        [DataType(DataType.EmailAddress)]
-        [Remote(action: "ValidateEmail", controller: "Accounts")]
-        public string Email { get; set; }
+        [Remote(action: "ValidateTaiKhoan", controller: "Accounts")]
+        public string TenDangNhap { get; set; }
+        //Số điện thoại
         [MaxLength(11)]
         [Required(ErrorMessage = "Vui lòng nhập Số điện thoại")]
         [Display(Name = "Điện thoại")]
