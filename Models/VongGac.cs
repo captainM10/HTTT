@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyPhamCheilinus.Models1;
+namespace MyPhamCheilinus.Models;
 
 public partial class VongGac
 {
@@ -11,5 +11,5 @@ public partial class VongGac
 
     public string? ViTri { get; set; }
 
-    public virtual ICollection<Pcgac> Pcgacs { get; set; } = new List<Pcgac>();
+    public virtual ICollection<NhiemVu> NhiemVus { get; set; } = new List<NhiemVu>();
 }

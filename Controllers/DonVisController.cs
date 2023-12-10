@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MyPhamCheilinus.Models1;
+using MyPhamCheilinus.Models;
 
 namespace MyPhamCheilinus.Controllers
 {

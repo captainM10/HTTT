@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyPhamCheilinus.Models1;
+using MyPhamCheilinus.Models;
 using System.Diagnostics;
 using System.Web;
 using X.PagedList;

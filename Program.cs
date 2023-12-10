@@ -1,16 +1,17 @@
 ﻿using AspNetCoreHero.ToastNotification.Notyf.Models;
 using AspNetCoreHero.ToastNotification;
 using Microsoft.EntityFrameworkCore;
-using MyPhamCheilinus.Models1;
+using MyPhamCheilinus.Models;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using MyPhamCheilinus.Models1;
+using MyPhamCheilinus.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 var connectionString = builder.Configuration.GetConnectionString("CanhGacContext");
 builder.Services.AddDbContext<CanhGacContext>(options => options.UseSqlServer(connectionString));
