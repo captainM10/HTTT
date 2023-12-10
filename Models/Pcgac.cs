@@ -11,8 +11,6 @@ public partial class Pcgac
 
     public int MaNhiemVu { get; set; }
 
-    public int MaVongGac { get; set; }
-
     public int MaCaGac { get; set; }
 
     public virtual CaGac MaCaGacNavigation { get; set; } = null!;
@@ -20,8 +18,6 @@ public partial class Pcgac
     public virtual HocVien MaHocVienNavigation { get; set; } = null!;
 
     public virtual NhiemVu MaNhiemVuNavigation { get; set; } = null!;
-
-    public virtual VongGac MaVongGacNavigation { get; set; } = null!;
 
     public virtual ThongTinGac NgayNavigation { get; set; } = null!;
 }

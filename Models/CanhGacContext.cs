@@ -39,7 +39,7 @@ public partial class CanhGacContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=CAPTAINM10\\TRUNGHIEU26;Initial Catalog=Canh_Gac;User ID=hieu;Password=1;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=CAPTAINM10\\TRUNGHIEU26;Initial Catalog=Canh_gac;User ID=hieu;Password=1;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,7 +52,7 @@ public partial class CanhGacContext : DbContext
             entity.Property(e => e.LastLogin).HasColumnType("date");
             entity.Property(e => e.Pasword).HasMaxLength(50);
             entity.Property(e => e.Phone)
-                .HasMaxLength(12)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.RoleId).HasColumnName("RoleID");
             entity.Property(e => e.Salt)
@@ -77,7 +77,7 @@ public partial class CanhGacContext : DbContext
 
         modelBuilder.Entity<CapBac>(entity =>
         {
-            entity.HasKey(e => e.MaCapBac).HasName("PK__CapBac__2190882552F9B9D5");
+            entity.HasKey(e => e.MaCapBac).HasName("PK__CapBac__219088250CA93663");
 
             entity.ToTable("CapBac");
 
@@ -90,7 +90,7 @@ public partial class CanhGacContext : DbContext
 
         modelBuilder.Entity<ChucVu>(entity =>
         {
-            entity.HasKey(e => e.MaChucVu).HasName("PK__ChucVu__D4639533EF4F85F6");
+            entity.HasKey(e => e.MaChucVu).HasName("PK__ChucVu__D4639533B1E59DD0");
 
             entity.ToTable("ChucVu");
 
@@ -116,7 +116,7 @@ public partial class CanhGacContext : DbContext
 
         modelBuilder.Entity<HocVien>(entity =>
         {
-            entity.HasKey(e => e.MaHocVien).HasName("PK__HocVien__685B0E6AD438784D");
+            entity.HasKey(e => e.MaHocVien).HasName("PK__HocVien__685B0E6A22C546ED");
 
             entity.ToTable("HocVien");
 
@@ -158,6 +158,10 @@ public partial class CanhGacContext : DbContext
             entity.ToTable("NhiemVu");
 
             entity.Property(e => e.TenNhiemVu).HasMaxLength(50);
+
+            entity.HasOne(d => d.MaVongGacNavigation).WithMany(p => p.NhiemVus)
+                .HasForeignKey(d => d.MaVongGac)
+                .HasConstraintName("FK_NhiemVu_VongGac");
         });
 
         modelBuilder.Entity<Pcgac>(entity =>
@@ -185,11 +189,6 @@ public partial class CanhGacContext : DbContext
                 .HasForeignKey(d => d.MaNhiemVu)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PCGac_NhiemVu");
-
-            entity.HasOne(d => d.MaVongGacNavigation).WithMany(p => p.Pcgacs)
-                .HasForeignKey(d => d.MaVongGac)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PCGac_VongGac");
 
             entity.HasOne(d => d.NgayNavigation).WithMany(p => p.Pcgacs)
                 .HasForeignKey(d => d.Ngay)

@@ -7,13 +7,13 @@ public partial class Account
 {
     public int AccountId { get; set; }
 
-    public string? TenDonVi { get; set; }
-
     public string? UserName { get; set; }
 
-    public string? Phone { get; set; }
+    public string? TenDonVi { get; set; }
 
     public string? Pasword { get; set; }
+
+    public string? Phone { get; set; }
 
     public int? RoleId { get; set; }
 
