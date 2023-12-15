@@ -1,0 +1,73 @@
+﻿@model CanhGac.Models.HocVien
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>SỬA THÔNG TIN HỌC VIÊN</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit"  asp-route-MaDaiDoi="@ViewBag.CurrentMaDaiDoi" asp-route-page="@ViewBag.CurrentPage" asp-route-MaID="@ViewBag.CurrentMaHV" asp-route-TenHV="@ViewBag.CurrentTenHV" asp-route-CapBac="@ViewBag.CurrentCapbac" asp-route-GioiTinh="@ViewBag.CurrentGioiTinh">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaHocVien" />
+            <div class="form-group">
+                <label>Mã học viên:</label>
+                <input asp-for="MaHocVien" class="form-control" />
+                <span asp-validation-for="MaHocVien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Tên học viên:</label>
+                <input asp-for="TenHocVien" class="form-control" />
+                <span asp-validation-for="TenHocVien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Ngày sinh:</label>
+                <input asp-for="NgaySinh" class="form-control" />
+                <span asp-validation-for="NgaySinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Mã đại đội:</label>
+                <select asp-for="MaDaiDoi" class="form-control" asp-items="ViewBag.MaDaiDoi"></select>
+            </div>
+            <div class="form-group">
+                <label>Giới tính</label>
+                <input asp-for="GioiTinh" class="form-control" />
+                <span asp-validation-for="GioiTinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Gác</label>
+                <select asp-for="Gac" class="form-control">
+                    <option value="True">Có</option>
+                    <option value="False">Không</option>
+                </select>
+                <span asp-validation-for="Gac" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label>Số lần gác</label>
+                <input asp-for="SoLanGac" class="form-control" />
+                <span asp-validation-for="SoLanGac" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Cấp bậc</label>
+                <select asp-for="MaCapBac" class="form-control" asp-items="ViewBag.CapBac"></select>
+            </div>
+            <div class="form-group">
+                <label>Chức vụ:</label>
+                <select asp-for="MaChucVu" class="form-control" asp-items="ViewBag.ChucVu"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@ViewBag.CurrentMaDaiDoi" asp-route-page="@ViewBag.CurrentPage" asp-route-MaID="@ViewBag.CurrentMaHV" asp-route-TenHV="@ViewBag.CurrentTenHV" asp-route-CapBac="@ViewBag.CurrentCapbac" asp-route-GioiTinh="@ViewBag.CurrentGioiTinh">Back to List</a>
+</div>
+

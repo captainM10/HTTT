@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CanhGac.Models.Account>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Tài khoản đăng nhấp</h1>
+
+<p>
+    <div class="col-lg-13 text-right">
+        <a class="btn btn-primary" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i> <span>Thêm tài khoản</span></a>
+    </div>
+</p>
+<table class="table">
+    <thead>
+        <tr class="text-center">
+            <th>
+                #
+            </th>
+            <th>
+                Tên đơn vị
+            </th>
+            <th>
+               Tên đăng nhập
+            </th>
+            <th>
+               Số điện thoại
+            </th>
+            <th>
+               Ngày tạo
+            </th>
+            <th>
+               Quyền truy cập
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td class="text-center" >
+                    @Html.DisplayFor(modelItem => item.AccountId)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.TenDonVi)
+                </td>
+                <td class="text-center">
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+                <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+
+                <td class=" text-center">
+                @Html.DisplayFor(modelItem => item.Role.RoleName)
+            </td>
+                <td class="text-right">
+                    <a asp-action="Edit" asp-route-id="@item.AccountId" class="btn btn-success btn-sm">Chỉnh sửa</a>
+                    <a asp-action="Details" asp-route-id="@item.AccountId" class="btn btn-info btn-sm">Xem chi tiết</a>
+                    <a asp-action="Delete" asp-route-id="@item.AccountId" class="btn btn-danger btn-sm">Xóa</a>
+
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

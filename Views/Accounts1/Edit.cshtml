@@ -1,0 +1,57 @@
+﻿@model CanhGac.Models.Account
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1><b>SỬA THÔNG TIN TÀI KHOẢN</b></h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AccountId" />
+           
+            <div class="form-group">
+               Tên đơn vị
+                <input asp-for="TenDonVi" class="form-control" />
+                <span asp-validation-for="TenDonVi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+               Tên đăng nhập
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Mật khẩu
+                <input asp-for="Pasword" class="form-control" />
+                <span asp-validation-for="Pasword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Số điện thoại
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Quyền truy cập
+                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Ngày tạo
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Trở lại</a>
+</div>
+

@@ -6,6 +6,7 @@ using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using CanhGac.Models;
+using CanhGac.Respository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 3; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 builder.Services.AddDbContext<CanhGacContext>(x => x.UseSqlServer(connectionString));
-
+builder.Services.AddScoped<IDaiDoiRespository, DaiDoiRespository>();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30); // Đặt thời gian tối đa để Session tồn tại

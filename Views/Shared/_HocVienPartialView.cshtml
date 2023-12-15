@@ -1,0 +1,163 @@
+﻿
+<div class="card-body">
+    <table id="example2" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Mã học viên
+                </th>
+                <th>
+                    Tên học viên
+                </th>
+                <th>
+                    Ngày sinh
+                </th>
+                <th>
+                    Giới tính
+                </th>
+                <th>
+                    Gác
+                </th>
+                <th>
+                    Số lần gác
+                </th>
+                <th>
+                    Cấp bậc
+                </th>
+                <th>
+                    Chức vụ
+                </th>
+                <th>
+                    Đại đội
+                </th>
+                <th>
+                    Thao tác
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null)
+            {
+
+                <p>
+
+                    <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
+                </p>
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.MaHocVien
+                        </td>
+                        <td>
+                            @item.TenHocVien
+                        </td>
+                        <td>
+                            @(item.NgaySinh.HasValue ? item.NgaySinh.Value.Date.ToShortDateString() : string.Empty)
+                        <td>
+                                @item.GioiTinh
+                        </td>
+                        <td>
+                                @(item.Gac.HasValue ? (item.Gac.Value ? "Có" : "Không") : string.Empty)
+                        </td>
+
+                        <td>
+                                @item.SoLanGac
+                        </td>
+                        <td>
+                                @(item.MaCapBacNavigation != null ? item.MaCapBacNavigation.TenCapBac : string.Empty)
+                        </td>
+                        <td>
+                                @(item.MaChucVuNavigation != null ? item.MaChucVuNavigation.TenChucVu : string.Empty)
+                        </td>
+                        <td>
+                                @(item.MaDaiDoiNavigation != null ? item.MaDaiDoiNavigation.TenDonVi : string.Empty)
+                        </td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.MaHocVien" class="btn btn-primary btn-sm">Chỉnh sửa</a>
+                            <a asp-action="Details" asp-route-id="@item.MaHocVien" class="btn btn-info btn-sm">Xem chi tiết</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaHocVien" class="btn btn-danger btn-sm">Xóa</a>
+
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+    <div aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="1" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">Đầu</a>
+            </li>
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@(Model.PageNumber - 1)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">Trước</a>
+            </li>
+            @if (Model.PageCount <= 3)
+            {
+                for (int page = 1; page <= Model.PageCount; page++)
+                {
+                    <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@(page)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@(page)</a>
+                    </li>
+                }
+            }
+            else
+            {
+                var startPage = Math.Max(1, Model.PageNumber - 1);
+                var endPage = Math.Min(Model.PageCount, startPage + 2);
+
+                if (startPage == 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="1" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">1</a>
+                    </li>
+                }
+                else if (startPage > 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="1" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">1</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                for (int page = startPage; page <= endPage; page++)
+                {
+                    <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@(page)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@(page)</a>
+                    </li>
+                }
+
+                if (endPage == Model.PageCount - 1)
+                {
+
+                    <li class="page-item">
+                        <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@Model.PageCount</a>
+                    </li>
+                }
+                else if (endPage < Model.PageCount - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@Model.PageCount</a>
+                    </li>
+                }
+            }
+
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@(Model.PageNumber + 1)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">Tiếp</a>
+            </li>
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@Model.First().MaDaiDoi" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch">Cuối</a>
+            </li>
+        </ul>
+    </div>
+
+</div>

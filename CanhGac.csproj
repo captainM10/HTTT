@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\Components\DaiDoiMenu\Default.cshtml" />
     <None Include="wwwroot\Adminassets\.github\codeql\codeql-config.yml" />
     <None Include="wwwroot\Adminassets\.github\CONTRIBUTING.md" />
     <None Include="wwwroot\Adminassets\.github\dependabot.yml" />

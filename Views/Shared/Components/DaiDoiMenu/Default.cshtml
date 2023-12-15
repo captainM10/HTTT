@@ -1,0 +1,26 @@
+﻿@model IEnumerable<CanhGac.Models.DonVi>
+
+
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+            Danh sách học viên
+            <i class="fas fa-angle-left right"></i>
+            
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        @foreach(var item in Model)
+        {
+             <li class="nav-item">
+                <a asp-controller="HocViens" asp-action ="HocVienTheoDaiDoi" asp-route-MaDaiDoi="@item.MaDonVi" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                   @item.TenDonVi
+                    
+                </a>
+            </li>
+        }
+                                                                                                                 
+    </ul>
+</li>

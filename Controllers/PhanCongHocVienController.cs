@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyPhamCheilinus.Controllers;
 using MyPhamCheilinus.Infrastructure;
 using MyPhamCheilinus.ModelViews;
+using System;
 
 
 namespace MyPhamCheilinus.Controllers
@@ -23,14 +24,20 @@ namespace MyPhamCheilinus.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(DateTime ngay)
+        public IActionResult Index(DateTime ngay, int? page,  string? TenHV = "",  string? NhiemVu = "", string? VongGac = "")
         {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = 10;
+
             var queryResult = (from pcg in db.Pcgacs
                                join hv in db.HocViens on pcg.MaHocVien equals hv.MaHocVien
                                join nv in db.NhiemVus on pcg.MaNhiemVu equals nv.MaNhiemVu
                                join cg in db.CaGacs on pcg.MaCaGac equals cg.MaCaGac
                                join vg in db.VongGacs on nv.MaVongGac equals vg.MaVongGac
                                where pcg.Ngay.Date == ngay.Date
+                         && (string.IsNullOrEmpty(TenHV) || hv.TenHocVien.Contains(TenHV))
+                         && (string.IsNullOrEmpty(NhiemVu) || nv.TenNhiemVu.Contains(NhiemVu))
+                         && (string.IsNullOrEmpty(VongGac) || vg.TenVongGac.Contains(VongGac))            
                                orderby cg.MaCaGac
                                select new PCGacViewModel
                                {
@@ -44,8 +51,74 @@ namespace MyPhamCheilinus.Controllers
                                    DenGio = TimeSpan.Parse(cg.DenGio.ToString())
                                }).ToList();
 
+            ViewBag.CurrentNgay = ngay;
+            ViewBag.CurrentNV = NhiemVu;
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.CurrentTenHV = TenHV;
+            ViewBag.CurrentVG = VongGac;
+            // Kiểm tra nếu queryResult rỗng, tức là không có dữ liệu cho ngày đầu vào
+            if (queryResult.Count == 0)
+            {
+                var noDataViewModel = new PCGacViewModel
+                {
+                    Ngay = ngay
+                };
+                queryResult.Add(noDataViewModel);
+            }
+
             return View(queryResult);
         }
+        public IActionResult Filtter(DateTime ngay, int? page, string? TenHV = "", string? NhiemVu = "", string? VongGac = "")
+        {
+            var url = "/PhanCongHocVien/Index?";
+            if (ngay != null)
+            {
+                url += $"ngay={ngay.ToString("yyyy-MM-dd")}&";
+            }
+
+            if (!string.IsNullOrEmpty(NhiemVu))
+            {
+                url += $"NhiemVu={NhiemVu}&";
+            }
+
+            if (!string.IsNullOrEmpty(TenHV))
+            {
+                url += $"TenHV={TenHV}&";
+            }
+
+            if (VongGac != null)
+            {
+                url += $"VongGac={VongGac}&";
+            }
+
+            // Loại bỏ dấu '&' cuối cùng nếu có
+            if (url.EndsWith("&"))
+            {
+                url = url.Substring(0, url.Length - 1);
+            }
+
+            return Json(new { status = "success", redirectUrl = url });
+        }
+
+
+        [HttpPost]
+        public IActionResult PhanCong(DateTime ngay)
+        {
+            try
+            {
+                var ngayParameter = new SqlParameter("@Ngay", ngay);
+
+                // Gọi stored procedure PhanCongGac bằng ExecuteSqlRaw
+                db.Database.ExecuteSqlRaw("EXEC PhanCongGac @Ngay", ngayParameter);
+
+                return RedirectToAction("Index"); // Trả về kết quả thành công
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error"); // Trả về lỗi nếu xảy ra exception
+            }
+        }
+
 
         [HttpPost]
         public IActionResult ThayTheHocVien(string maHocVienCu, DateTime ngay)
@@ -60,16 +133,11 @@ namespace MyPhamCheilinus.Controllers
                 // Load lại trang, có thể chuyển hướng hoặc render lại view tùy thuộc vào yêu cầu của bạn
                 return RedirectToAction("Index"); // Chuyển hướng đến action Index
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                // Xử lý lỗi và ghi log nếu cần
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(500, "Internal Server Error"); // Trả về lỗi nếu xảy ra exception
             }
         }
-
-
-
-
 
 
 
@@ -155,4 +223,4 @@ namespace MyPhamCheilinus.Controllers
         //    }
         //}
     }
-}
+        }

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CanhGac.Models.HocVien>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TenHocVien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgaySinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GioiTinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gac)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLanGac)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaCapBacNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaChucVuNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaDaiDoiNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenHocVien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgaySinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GioiTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gac)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLanGac)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaCapBacNavigation.MaCapBac)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaChucVuNavigation.MaChucVu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDaiDoiNavigation.MaDonVi)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaHocVien">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaHocVien">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaHocVien">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

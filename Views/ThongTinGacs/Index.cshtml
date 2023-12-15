@@ -194,13 +194,19 @@
                             } else {
                                 // Ngày chưa có ngày gác, mở hộp thoại thêm ngày gác
                                 $('#add-form').find('#Ngay').val(date.format('YYYY-MM-DD'));
+
+                                // Kiểm tra xem ngày được chọn có phải là ngày hiện tại không
+                                var isToday = date.isSame(moment(), 'day');
+
+                                // Bật hoặc tắt trường Hoi và Dap tùy thuộc vào ngày được chọn có phải là ngày hiện tại hay không
+                                $('#add-form').find('#Hoi, #Dap').prop('disabled', !isToday);
+
                                 // Open the add dialog
                                 $('#add-dialog').dialog({
                                     title: 'Thêm ngày gác',
                                     modal: true,
                                     buttons: {
                                         "Lưu": function () {
-                                            // Lấy ngày gác mới từ form
                                             var newEvent = {
                                                 MaDonVi: $('#add-form').find('#MaDonVi').val(),
                                                 Ngay: $('#add-form').find('#Ngay').val(),
@@ -208,38 +214,31 @@
                                                 Dap: $('#add-form').find('#Dap').val()
                                             };
 
-                                            // Gửi một yêu cầu AJAX để thêm ngày gác mới vào cơ sở dữ liệu3
                                             $.ajax({
                                                 url: '/ThongTinGacs/AddEvent',
                                                 type: 'POST',
                                                 data: newEvent,
                                                 success: function (response) {
                                                     if (response.status) {
-                                                        // Display a success message
                                                         alert(response.message);
-                                                        // Refresh the calendar to reflect the new event
                                                         $('#calendar').fullCalendar('refetchEvents');
-                                                    }
-                                                    else {
-                                                        // Display an error message
+                                                    } else {
                                                         alert(response.message);
                                                     }
-                                                    // Close the edit dialog
                                                     $('#add-dialog').dialog('close');
                                                 },
                                                 error: function (xhr, status, error) {
-                                                    // Display an error message
                                                     alert('Bạn cần tài khoản có đủ thẩm quyền.');
                                                     console.log(xhr.responseText);
                                                 }
                                             });
                                         },
                                         "Hủy": function () {
-                                            // Close the edit dialog
                                             $(this).dialog('close');
                                         }
                                     }
                                 });
+
                                 $('#add-dialog').on('dialogclose', function () {
                                     $('#add-form')[0].reset();
                                 });
@@ -315,7 +314,7 @@
                                 '<div class="btn-group">' +
                                 '<button id="edit-button" class="btn btn-primary">Sửa</button>' +
                                 '<button id="delete-button" class="btn btn-danger">Xóa</button>' +
-                                '<button id="lichgac-button" class="btn btn-success" data-ngay="' + moment(event.start).format('DD/MM/YYYY') + '">Lịch gác</button>' +
+                                '<button id="lichgac-button" class="btn btn-success" data-ngay="' + moment(event.start).format('YYYY-MM-DD') + '">Lịch gác</button>' +
 
                                 '</div>'
                             );
@@ -339,20 +338,23 @@
                                         // display the current event information in the form
                                         $('#edit-form').find('#EditMaDonVi').val(event.title);
                                         $('#edit-form').find('#EditNgay').val(moment(event.start).format('YYYY-MM-DD'));
-                                        $('#edit-form').find('#EditHoi').val(event.hoi);
-                                        $('#edit-form').find('#EditDap').val(event.dap);
 
+                                        // Check if the event is today
+                                        var isEditable = moment().isSame(event.start, 'day');
+                                 
+
+                                        // Set disabled status and value for Hoi and Dap fields
+                                        $('#edit-form').find('#EditHoi').prop('disabled', !isEditable).val(event.hoi);
+                                        $('#edit-form').find('#EditDap').prop('disabled', !isEditable).val(event.dap);
                                     },
                                     buttons: {
                                         "Lưu": function () {
                                             // get the updated event information from the form
                                             var updatedEvent = {
-
                                                 MaDonVi: $('#edit-form').find('#EditMaDonVi').val(),
                                                 Ngay: $('#edit-form').find('#EditNgay').val(),
                                                 Hoi: $('#edit-form').find('#EditHoi').val(),
                                                 Dap: $('#edit-form').find('#EditDap').val()
-
                                             };
 
                                             // send an AJAX request to update the event in the database
@@ -387,6 +389,7 @@
                                         }
                                     }
                                 });
+
                             });
 
                             // assign delete function to delete button
@@ -426,42 +429,6 @@
         var successMessageShown = false;
         var successMessageShown1 = false;
 
-        //function PhanCongGac() {
-        //    successMessageShown = false;
-        //    successMessageShown1 = false;
-        //    var donViList = ["C155", "C156", "C157","C158"];
-        //    var today = moment();
-        //    var lastDayOfMonth = moment().endOf('month');
-
-
-
-
-        //     if (today.date() >= 3) {
-        //    // Nếu có, chuyển sang tháng tiếp theo
-        //    today.add(1, 'month');
-        //    // Đặt ngày về đầu tháng
-        //    today.startOf('month');
-        //    // Cập nhật lastDayOfMonth
-        //    lastDayOfMonth = moment().add(1, 'months').endOf('month');
-        //    }
-        //    while (today.isSameOrBefore(lastDayOfMonth)) {
-        //        var donViIndex = maPhanCongCounter % donViList.length;
-
-        //        var newEvent = {
-        //            MaDonVi: donViList[donViIndex], // Sử dụng chỉ số của danh sách đơn vị
-        //            Ngay: today.format('YYYY-MM-DD'),
-        //        };
-
-        //        maPhanCongCounter++;
-
-        //        console.log("Sự kiện mới: ", newEvent); // In ra thông tin sự kiện để kiểm tra
-
-        //        // Thực hiện kiểm tra trước khi thêm sự kiện
-        //        CheckEvents(newEvent);
-
-        //        today.add(1, 'day'); // Tăng ngày lên 1 để chuyển sang ngày tiếp theo
-        //    }
-        //}
         function PhanCongGac() {
             successMessageShown = false;
                 successMessageShown1 = false;
